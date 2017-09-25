@@ -32,26 +32,27 @@ OmniMetricsLib.prototype._addDomEventHandler = function (instance) {
 
 var OmniMetricsPage = function () {};
 
-OmniMetricsPage.properties.setPageId = function (pageid) {
+OmniMetricsPage.prototype.setPageId = function (pageid) {
     if(typeof pageid !== 'string'){
         return console.log('page id is not valid');}
-    this.pagid = pageid;
+    document.cookie = 'pageid=' + pageid +'; path=/';
+    return pageid;
 };
 
+OmniMetricsPage.prototype.getPageId = function () {
+    return this['pageid'];
+};
+
+
 OmniMetricsPage.prototype.trackPageView = function () {
-
-    var url = window.path.location;
-
-
-
-
+    var pageid = this.getPageId();
+    var page = _.pageviewInfo(pageid);
 }
 
 
 
-
-
 var omniMaster = new OmniMetricsLib();
+var omniPage = new OmniMetricsPage();
 
-export { omniMaster };
+export { omniMaster, omniPage };
 

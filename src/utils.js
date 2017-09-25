@@ -61,6 +61,16 @@ _.truncate = function(obj, length) {
     return ret;
 };
 
+_.strip_empty_properties = function(p) {
+    var ret = {};
+    _.each(p, function(v, k) {
+        if (_.isString(v) && v.length > 0) {
+            ret[k] = v;
+        }
+    });
+    return ret;
+};
+
 _.bind = function(func, context) {
     var args, bound;
     if (nativeBind && func.bind === nativeBind) {

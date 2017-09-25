@@ -3,7 +3,7 @@ import { describe, it } from 'mocha';
 import jsdom from 'mocha-jsdom';
 import sinon from 'sinon';
 
-import { omniMaster } from '../../src/omnimetrics-core';
+import { omniMaster, omniPage } from '../../src/omnimetrics-core';
 
 jsdom({
     url: 'https://omnimetrics.com/about/?query=param'
@@ -54,4 +54,19 @@ describe('event tracking', function () {
 
 
 
-})
+});
+
+describe('track page view', function () {
+
+    it('setPageId it will store pageid in cookie ', function () {
+        omniPage.setPageId('123456');
+        expect(document.cookie).is.eq('pageid=123456');
+    });
+
+    it('getPageId', function () {
+        expect(document.cookie).is.eq('pageid=123456');
+    });
+
+});
+
+
