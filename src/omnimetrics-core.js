@@ -6,6 +6,7 @@ OmniMetricsLib.prototype.sayHello = function () {
     return 'Hello World';
 };
 
+
 OmniMetricsLib.prototype.track = function(event_name, properties) {
 
     if(typeof event_name !== 'string'){
@@ -28,6 +29,26 @@ OmniMetricsLib.prototype._addDomEventHandler = function (instance) {
         instance.track();
     });
 };
+
+var OmniMetricsPage = function () {};
+
+OmniMetricsPage.properties.setPageId = function (pageid) {
+    if(typeof pageid !== 'string'){
+        return console.log('page id is not valid');}
+    this.pagid = pageid;
+};
+
+OmniMetricsPage.prototype.trackPageView = function () {
+
+    var url = window.path.location;
+
+
+
+
+}
+
+
+
 
 
 var omniMaster = new OmniMetricsLib();
