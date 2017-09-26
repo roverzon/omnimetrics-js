@@ -3,13 +3,14 @@
 var express      = require('express');
 var cookieParser = require('cookie-parser');
 var logger       = require('morgan');
+var os           = require('os');
 
 var app = express();
 
 app.use(cookieParser());
 app.use(logger('dev'));
 
-app.use('/tests', express.static(__dirname + "/tests"));
+// app.use('/tests', express.static(__dirname + "/tests"));
 app.get('/tests/cookie_included/:cookieName', function(req, res) {
     if (req.cookies && req.cookies[req.params.cookieName]) {
         res.json(1);
@@ -19,7 +20,7 @@ app.get('/tests/cookie_included/:cookieName', function(req, res) {
 });
 app.use(express.static(__dirname));
 app.get('/', function(req, res) {
-    res.redirect(301, '/tests/');
+    res.sendFile(__dirname + "/tests/index.html");
 });
 
 var server = app.listen(3000, function () {

@@ -1,13 +1,17 @@
 import { expect } from 'chai';
-import { describe, it } from 'mocha';
+import { describe, it, before } from 'mocha';
 import jsdom from 'mocha-jsdom';
 import sinon from 'sinon';
+import { _ } from '../../src/utils.js';
 
 import { omniMaster, omniPage } from '../../src/omnimetrics-core';
 
 jsdom({
-    url: 'https://omnimetrics.com/about/?query=param'
+    url: 'https://omnimetrics.com/about/?query=param',
+    referrer: 'http://www.bbc.co.uk',
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'
 });
+
 
 const triggerMouseEvent = function(node, eventType) {
     node.dispatchEvent(new MouseEvent(eventType, {
@@ -18,12 +22,16 @@ const triggerMouseEvent = function(node, eventType) {
     }));
 };
 
-const simulateClick = function(el) {
-    triggerMouseEvent(el, 'click');
+const simulateMouseDown = function(el) {
+    triggerMouseEvent(el, 'mousedown');
+};
+
+const simulateMouseMove = function(el) {
+    triggerMouseEvent(el, 'mousemove');
 };
 
 
-describe('track click event on browser', function () {
+describe('track event on DOM', function () {
     const lib = {
         track: sinon.spy()
     };
@@ -32,15 +40,23 @@ describe('track click event on browser', function () {
         omniMaster._addDomEventHandler(lib);
     });
 
-    it('should track click event', function () {
+    it('should track mousedown event', function () {
         const div = document.createElement('div');
         document.body.appendChild(div);
-        simulateClick(div);
-        simulateClick(div);
+        simulateMouseDown(div);
+        simulateMouseDown(div);
         expect(true).to.equal(lib.track.calledTwice);
         lib.track.reset();
-
     });
+
+    it('should track mousemove event', function () {
+        const div = document.createElement('div');
+        document.body.appendChild(div);
+        simulateMouseMove(div);
+        expect(true).to.equal(lib.track.called);
+        lib.track.reset();
+    });
+
 });
 
 describe('event tracking', function () {
@@ -52,11 +68,9 @@ describe('event tracking', function () {
         );
     });
 
-
-
 });
 
-describe('track page view', function () {
+describe('get page infow', function () {
 
     it('setPageId it will store pageid in cookie ', function () {
         omniPage.setPageId('123456');
@@ -66,6 +80,14 @@ describe('track page view', function () {
     it('getPageId', function () {
         expect(document.cookie).is.eq('pageid=123456');
     });
+
+    it('pageviewInfo', function () {
+
+        var pageId = omniPage.getPageId();
+        var pageView = _.info.pageviewInfo(pageId);
+
+    });
+
 
 });
 

@@ -346,7 +346,7 @@ _.info = {
     },
 
     pageviewInfo: function(pageId) {
-        return _.strip_empty_properties({
+        return {
             '$page': pageId,
             '$referrer': document.referrer,
             '$browser': _.info.browser(userAgent, navigator.vendor, window.opera),
@@ -356,7 +356,7 @@ _.info = {
             '$contributor' : [],
             '$section' : [],
             '$hier' : ''
-        });
+        };
     }
 };
 
